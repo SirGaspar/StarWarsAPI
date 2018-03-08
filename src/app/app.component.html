@@ -1,20 +1,177 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<!-- Apresentação -->
+<div class="start">
+  <img id="vader" src="/assets/img/vader.png" alt="">
+  <img id="rey" class=" hide-on-small-only" src="/assets/img/rey.png" alt="">
+  <img id="logo" src="/assets/img/logo.png" alt="">
+  <a (click)="start()" class="waves-effect waves-light btn grey darken-3 startBtn">Começar</a>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<!-- Modal Structure -->
+<div id="filmModal" class="modal bottom-sheet">
+  <div style="padding-left: 300px;" class="modal-content">
+    <div class="center-align">
+      <table class="striped centered">
+      <thead>
+        <tr>
+          <th *ngFor="let film of films; let x = index">{{ film.title }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td *ngFor="let film of films; let x = index">
+            <i class="material-icons">person</i><p>{{ film.characters.length }}</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div style="padding-left: 300px;" class="modal-footer">
+    <button id='closeModal' class="btn-floating pointer grey darken-3 center-align" onclick="$('#filmModal').modal('close');">
+      <i class="material-icons">close</i>
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="personModal" class="modal bottom-sheet device hide-on-med-and-up">
+  <div *ngIf="loader == false" class="modal-content center-align hiddenbar">
+    <div class="title grey darken-3">
+      <p class="white-text">{{ data[id].name }}</p>
+    </div>
+    <img class="charImgMobile" src="/assets/img/char/{{ data[id].name }}.png" alt="">
+    <div class="details center-align mt-10">
+      <div class="p-30">
+        <div *ngIf="data[id].gender == 'female'" class="genderIcon">
+          <i class="fas fa-venus"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'male'" class="genderIcon">
+          <i class="fas fa-mars"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'n/a' || data[id].gender == 'none'" class="genderIcon">
+          <i class="fas fa-ban"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'hermaphrodite'" class="genderIcon">
+          <i class="fas fa-venus-mars"></i>
+        </div>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-arrows-alt-v"></i><p>{{ data[id].height }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-weight"></i><p>{{ data[id].mass }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-globe"></i><p>{{ planets[id] }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-street-view"></i><p>{{ species[id] }}</p>
+      </div>
+    </div>
+  </div>
+  <button id='close' class="btn-floating pointer grey darken-3" onclick="$('#personModal').modal('close');"><i class="material-icons">close</i></button>
+  <div *ngIf="loader == true" class="mt-50 loader"></div>
+</div>
+
+<!-- Menu lateral -->
+<div class="side-nav fixed">
+  <table class="highlight centered">
+    <thead class="hiddenbar">
+      <tr>
+        <th class="pointer">Personagem</th>
+      </tr>
+    </thead>
+    <tbody class="hiddenbar" *ngIf="loader == false">
+      <tr class="hide-on-small-only" *ngFor="let person of data; let x = index">
+        <td data-target="modal1" (click)="changeId(x)" id="{{ [x + 1] }}" class="pointer">{{ person.name }}</td>
+      </tr>
+      <tr class="hide-on-med-and-up" *ngFor="let person of data; let x = index">
+        <td data-target="modal1" (click)="openModal(x)" id="{{ [x + 1] }}" class="pointer">{{ person.name }}</td>
+      </tr>
+    </tbody>
+    <div style="margin-bottom: 30px;" *ngIf="loader == true" class="mt-50 loader"></div>
+  </table>
+  <div style="margin-bottom: 30px;" class="pages container">
+    <a (click)="changePage(1)" id="page1" class="pointer waves-effect selected">1</a>
+    <a (click)="changePage(2)" id="page2" class="pointer waves-effect">2</a>
+    <a (click)="changePage(3)" id="page3" class="pointer waves-effect">3</a>
+    <a (click)="changePage(4)" id="page4" class="pointer waves-effect">4</a>
+    <a (click)="changePage(5)" id="page5" class="pointer waves-effect">5</a>
+    <a (click)="changePage(6)" id="page6" class="pointer waves-effect">6</a>
+    <a (click)="changePage(7)" id="page7" class="pointer waves-effect">7</a>
+    <a (click)="changePage(8)" id="page8" class="pointer waves-effect">8</a>
+    <a (click)="changePage(9)" id="page9" class="pointer waves-effect">9</a>
+  </div>
+  <div class="hide-on-small-only center-align">
+    <button id="filmsBtn" style="margin-right: 15px;" href="#filmModal" class="waves-effect waves-light btn-floating btn-large grey darken-3 modal-trigger">
+      <i class="material-icons">theaters</i>
+    </button>
+    <button id="contentBtn" (click)="vertBtn()" class="waves-effect waves-light btn-floating btn-large grey darken-3 pulse">
+      <i class="material-icons">format_indent_increase</i>
+    </button>
+  </div>
+</div>
+
+<!-- Conteúdo -->
+<div class="content hide-on-small-only">
+  <div *ngIf="loader == false" class="infos">
+    <div class="title grey darken-3">
+      <span class="white-text">{{ data[id].name }}</span>
+    </div>
+    <img class="charImg" src="/assets/img/char/{{ data[id].name }}.png" alt="">
+    <div class="details center-align mt-10">
+      <div class="p-30">
+        <div *ngIf="data[id].gender == 'female'" class="genderIcon">
+          <i class="fas fa-venus"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'male'" class="genderIcon">
+          <i class="fas fa-mars"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'n/a' || data[id].gender == 'none'" class="genderIcon">
+          <i class="fas fa-ban"></i>
+        </div>
+        <div *ngIf="data[id].gender == 'hermaphrodite'" class="genderIcon">
+          <i class="fas fa-venus-mars"></i>
+        </div>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-arrows-alt-v"></i><p>{{ data[id].height }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-weight"></i><p>{{ data[id].mass }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-globe"></i><p>{{ planets[id] }}</p>
+      </div>
+      <div class="p-30">
+        <i class="fas fa-street-view"></i><p>{{ species[id] }}</p>
+      </div>
+    </div>
+    <div *ngIf="loaderFilms == true" class="mt-50 loader"></div>
+  </div>
+    <div *ngIf="loader == true" class="infos loader"></div>
+</div>
+
+<!-- Tabela Completa -->
+<div class="table">
+  <table class="striped centered">
+    <thead>
+      <tr>
+        <th>Altura</th>
+        <th>Sexo</th>
+        <th>Ano</th>
+        <th>Planeta</th>
+        <th>Espécie</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of data; let x = index">
+        <td>{{ person.height }}</td>
+        <td>{{ person.gender }}</td>
+        <td>{{ person.birth_year }}</td>
+        <td>{{ planets[x] }}</td>
+        <td>{{ species[x] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

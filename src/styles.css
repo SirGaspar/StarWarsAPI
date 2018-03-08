@@ -1,1 +1,103 @@
-/* You can add global styles to this file, and also import other style files */
+body{
+  overflow: hidden !important;
+}
+
+a{
+  color: black;
+}
+
+.modal-overlay{
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+@keyframes Card {
+    from {
+      border-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      border-color: #947c47;
+    }
+}
+/* Card Structure */
+.card-container{
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+.card-img {
+  max-height: 100%;
+  padding: 0;
+}
+.card-model3 {
+  max-width: 100vw;
+  position: relative;
+  cursor: pointer;
+  padding: 0;
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0);
+  height: 25vh;
+  transition: height 0.3s;
+}
+/* Card on Hover */
+.card-model3:hover {
+  height: 25vh;
+  border-color: #947c47;
+  animation-name: Card;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+ }
+/* Card Title */
+.card-title {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  border-color: white;
+  color: white;
+  background-color: #000000e0;
+  width: 100%;
+  z-index: 20;
+  transition: height 0.6s;
+}
+.card-model3 .card-title {
+  bottom: 0;
+  transition: bottom 0.6s;
+  border-top: 1px solid;
+}
+/* Card Title (Hover) */
+.card-model3:hover .card-title {
+   bottom: calc(25vh - 60px);
+}
+/* Card Content */
+.card-content{
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 0px;
+  border-color: white;
+  color: white;
+  background-color: #000000e0;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.6s, height 0.6s;
+  align-items: center;
+  justify-content: center;
+}
+.card-model3 .card-content {
+  bottom: 0;
+  border-top: 1px solid;
+}
+/* Card Content (Hover) */
+.card-model3:hover .card-content {
+  background-color: ##000000e0;
+  height: calc(100% - 58px);
+  animation-duration: 0.5s;
+  visibility: visible;
+  opacity: 1;
+}
